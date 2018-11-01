@@ -24,7 +24,7 @@ feature did.
 3. Rejoice in the knowledge that you can once again control your
    browser's behaviour in a sensible, granular fashion.
 
-[install]: https://chrome.google.com/webstore
+[install]: https://chrome.google.com/webstore/detail/tab-muter/bnclejfcblondkjliiblkojdeloomadd
 
 ## Bugs
 
