@@ -1,0 +1,6 @@
+/images/audible-*.png
+/images/muted-*.png
+/images/webstore-icon-*.png
+# Unfortunately this icon is not redistributable
+/images/muted.svg
+/out.zip
