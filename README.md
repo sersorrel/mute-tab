@@ -36,6 +36,13 @@ Please do – I'm intending to keep this extension _simple_, unlike most
 of the other ones like it, so no guarantees your code will make it in,
 but feel free to open a pull request and discuss.
 
+Note that this extension includes an icon from [Font Awesome Pro][fa],
+`images/muted.svg`, which I'm not allowed to distribute in source form.
+There is a similar icon from Font Awesome Free at
+`images/muted-free.svg`, which you can rename and use instead.
+
+[fa]: https://fontawesome.com/
+
 ## License
 
 GPLv3+
