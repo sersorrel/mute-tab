@@ -9,16 +9,25 @@
   "browser_action": {
     "default_title": "Mute tab",
     "default_icon": {
-      "19": "images/audible-19.png",
-      "38": "images/audible-38.png"
+      "19": "images/audible-dark-19.png",
+      "38": "images/audible-dark-38.png"
     }
   },
+
+  "permissions": [
+    "storage"
+  ],
 
   "background": {
     "scripts": [
       "background.js"
     ],
     "persistent": false
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
   },
 
   "icons": {
