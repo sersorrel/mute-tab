@@ -1,32 +1,46 @@
 // Set the toolbar icon to the audible one.
 function doAudibleIcon(tab) {
   console.log("set icon -> audible")
-  chrome.browserAction.setIcon({
-    "path": {
-      "19": "images/audible-19.png",
-      "38": "images/audible-38.png",
-    },
-    "tabId": tab.id,
-  })
-  chrome.browserAction.setTitle({
-    "title": "Mute tab",
-    "tabId": tab.id,
+  chrome.storage.sync.get({
+    "colour": "dark",
+  }, function(items) {
+    if (chrome.runtime.lastError) {
+      console.error("Couldn't load settings: " + chrome.runtime.lastError)
+    }
+    chrome.browserAction.setIcon({
+      "path": {
+        "19": `images/audible-${items.colour}-19.png`,
+        "38": `images/audible-${items.colour}-38.png`,
+      },
+      "tabId": tab.id,
+    })
+    chrome.browserAction.setTitle({
+      "title": "Mute tab",
+      "tabId": tab.id,
+    })
   })
 }
 
 // Set the toolbar icon to the muted one.
 function doMutedIcon(tab) {
   console.log("set icon -> muted")
-  chrome.browserAction.setIcon({
-    "path": {
-      "19": "images/muted-19.png",
-      "38": "images/muted-38.png",
-    },
-    "tabId": tab.id,
-  })
-  chrome.browserAction.setTitle({
-    "title": "Unmute tab",
-    "tabId": tab.id,
+  chrome.storage.sync.get({
+    "colour": "dark",
+  }, function(items) {
+    if (chrome.runtime.lastError) {
+      console.error("Couldn't load settings: " + chrome.runtime.lastError)
+    }
+    chrome.browserAction.setIcon({
+      "path": {
+        "19": `images/muted-${items.colour}-19.png`,
+        "38": `images/muted-${items.colour}-38.png`,
+      },
+      "tabId": tab.id,
+    })
+    chrome.browserAction.setTitle({
+      "title": "Unmute tab",
+      "tabId": tab.id,
+    })
   })
 }
 
