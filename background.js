@@ -66,7 +66,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 // Update the icon whenever necessary.
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  if ("mutedInfo" in changeInfo) {
+  if (changeInfo.hasOwnProperty("mutedInfo")) {
     var currStateStr = tab.mutedInfo.muted ? "MUTED" : "AUDIBLE"
     if (changeInfo.mutedInfo.muted) {
       console.log(`mutestate: ${currStateStr} -> MUTED`)
@@ -75,7 +75,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
       console.log(`mutestate: ${currStateStr} -> AUDIBLE`)
       doAudibleIcon(tab)
     }
-  } else if ("status" in changeInfo) {
+  } else if (changeInfo.hasOwnProperty("status")) {
     // Apparently the toolbar icon gets reset to the default once
     // another page starts loading, so we have to reset it whenever that
     // happens.
