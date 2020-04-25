@@ -1,16 +1,13 @@
+import {getColour} from './config.js'
+
 // Set the toolbar icon to the audible one.
 function doAudibleIcon(tab) {
   console.log("set icon -> audible")
-  chrome.storage.sync.get({
-    "colour": "dark",
-  }, function(items) {
-    if (chrome.runtime.lastError) {
-      console.error("Couldn't load settings: " + chrome.runtime.lastError)
-    }
+  getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
-        "19": `images/audible-${items.colour}-19.png`,
-        "38": `images/audible-${items.colour}-38.png`,
+        "19": `images/audible-${colour}-19.png`,
+        "38": `images/audible-${colour}-38.png`,
       },
       "tabId": tab.id,
     })
@@ -18,22 +15,19 @@ function doAudibleIcon(tab) {
       "title": "Mute tab",
       "tabId": tab.id,
     })
+  }).catch(error => {
+    console.error(`Couldn't load settings: ${error}`)
   })
 }
 
 // Set the toolbar icon to the muted one.
 function doMutedIcon(tab) {
   console.log("set icon -> muted")
-  chrome.storage.sync.get({
-    "colour": "dark",
-  }, function(items) {
-    if (chrome.runtime.lastError) {
-      console.error("Couldn't load settings: " + chrome.runtime.lastError)
-    }
+  getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
-        "19": `images/muted-${items.colour}-19.png`,
-        "38": `images/muted-${items.colour}-38.png`,
+        "19": `images/muted-${colour}-19.png`,
+        "38": `images/muted-${colour}-38.png`,
       },
       "tabId": tab.id,
     })
@@ -41,13 +35,15 @@ function doMutedIcon(tab) {
       "title": "Unmute tab",
       "tabId": tab.id,
     })
+  }).catch(error => {
+    console.error(`Couldn't load settings: ${error}`)
   })
 }
 
 // Toggle the mute state of a tab.
 function toggleMuted(tab) {
   console.log(`toggleMuted`)
-  var isMuted = tab.mutedInfo.muted
+  let isMuted = tab.mutedInfo.muted
   chrome.tabs.update(tab.id, {"muted": !isMuted})
   // Note: the icon is updated down below, by the chrome.tabs.onUpdated
   // listener (this is to make sure that the icon doesn't get out of
@@ -55,7 +51,7 @@ function toggleMuted(tab) {
 }
 
 // Event listener for the toolbar icon being clicked.
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(tab => {
   console.log("toggle mute state (icon click)")
   if (tab !== undefined) {
     toggleMuted(tab)
@@ -65,9 +61,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 })
 
 // Update the icon whenever necessary.
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.hasOwnProperty("mutedInfo")) {
-    var currStateStr = tab.mutedInfo.muted ? "MUTED" : "AUDIBLE"
+    let currStateStr = tab.mutedInfo.muted ? "MUTED" : "AUDIBLE"
     if (changeInfo.mutedInfo.muted) {
       console.log(`mutestate: ${currStateStr} -> MUTED`)
       doMutedIcon(tab)
