@@ -24,10 +24,34 @@ function syncedStorageSet(name, value) {
   })
 }
 
-export function getColour() {
+export function getRegularColour() {
   return syncedStorageGet("colour", "dark")
 }
 
-export function setColour(val) {
+export function setRegularColour(val) {
   return syncedStorageSet("colour", val)
+}
+
+export function getIncognitoColour() {
+  return syncedStorageGet("incognito-colour", "light")
+}
+
+export function setIncognitoColour(val) {
+  return syncedStorageSet("incognito-colour", val)
+}
+
+export function getColour() {
+  if (chrome.extension.inIncognitoContext) {
+    return getIncognitoColour()
+  } else {
+    return getRegularColour()
+  }
+}
+
+export function setColour(val) {
+  if (chrome.extension.inIncognitoContext) {
+    return setIncognitoColour(val)
+  } else {
+    return setRegularColour(val)
+  }
 }
