@@ -2,7 +2,7 @@ SIZES := 16 19 38 48 128
 ICONNAMES := $(addprefix audible-dark-, $(SIZES)) $(addprefix audible-light-, $(SIZES)) $(addprefix muted-dark-, $(SIZES)) $(addprefix muted-light-, $(SIZES)) $(addprefix webstore-icon-, $(SIZES))
 ICONS := $(addprefix images/, $(addsuffix .png, $(ICONNAMES)))
 
-FILES := $(ICONS) background.js LICENSE manifest.json options.js options.html README.md
+FILES := $(ICONS) background.js config.js LICENSE manifest.json options.html options.js README.md
 
 .PHONY: zip
 zip: out.zip
@@ -11,7 +11,7 @@ out.zip: $(FILES)
 	rm -f $@
 	zip -r $@ $^
 
-# There's no sane way to avoid duplicating the recipe here.
+# There's no good way to avoid duplicating the recipe here.
 images/audible-dark-%.png: images/audible.svg
 	inkscape -z -e $@ -w $* -h $* $<
 images/muted-dark-%.png: images/muted.svg
