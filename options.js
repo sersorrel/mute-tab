@@ -1,10 +1,16 @@
-import {getColour, setColour} from './config.js'
+import {getRegularColour, setRegularColour, getIncognitoColour, setIncognitoColour} from './config.js'
 
 function loadOptions() {
   let status = document.getElementById("status")
   let colour = document.getElementById("colour")
-  getColour().then(val => {
+  let incognitoColour = document.getElementById("incognito-colour")
+  getRegularColour().then(val => {
     colour.value = val
+  }).catch(error => {
+    status.textContent = `Couldn't load settings: ${error}`
+  })
+  getIncognitoColour().then(val => {
+    incognitoColour.value = val
   }).catch(error => {
     status.textContent = `Couldn't load settings: ${error}`
   })
@@ -13,7 +19,13 @@ function loadOptions() {
 function saveOptions() {
   let status = document.getElementById("status")
   let colour = document.getElementById("colour")
-  setColour(colour.value).then(() => {
+  let incognitoColour = document.getElementById("incognito-colour")
+  setRegularColour(colour.value).then(() => {
+    status.textContent = ""
+  }).catch(error => {
+    status.textContent = `Couldn't save settings: ${error}`
+  })
+  setIncognitoColour(incognitoColour.value).then(() => {
     status.textContent = ""
   }).catch(error => {
     status.textContent = `Couldn't save settings: ${error}`
