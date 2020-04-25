@@ -43,6 +43,6 @@ There is a similar icon from Font Awesome Free at
 
 [fa]: https://fontawesome.com/
 
-## License
+## Copyright
 
-GPLv3+
+Copyright © 2020 Ash Holland. Licensed under the EUPL (1.2 or later).
