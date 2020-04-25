@@ -1,38 +1,58 @@
+function syncedStorageGet(name, fallback = undefined) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get({[name]: fallback}, items => {
+      let e = chrome.runtime.lastError
+      if (e) {
+        reject(Error(e.message))
+      } else {
+        resolve(items[name])
+      }
+    })
+  })
+}
+
+function syncedStorageSet(name, value) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.set({[name]: value}, () => {
+      let e = chrome.runtime.lastError
+      if (e) {
+        reject(Error(e.message))
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
+function getColour() {
+  return syncedStorageGet("colour", "dark")
+}
+
+function setColour(val) {
+  return syncedStorageSet("colour", val)
+}
+
 function loadOptions() {
-  console.log("loading options")
   let status = document.getElementById("status")
   let colour = document.getElementById("colour")
-
-  chrome.storage.sync.get({
-    "colour": "dark",
-  }, function(items) {
-    if (chrome.runtime.lastError) {
-      status.textContent = "Couldn't load settings: " + chrome.runtime.lastError
-    }
-    colour.value = items.colour
-    console.log(`done loading (colour: ${items.colour})`)
+  getColour().then(val => {
+    colour.value = val
+  }).catch(error => {
+    status.textContent = `Couldn't load settings: ${error}`
   })
 }
 
 function saveOptions() {
-  console.log("saving options")
-  var status = document.getElementById("status")
-  var colour = document.getElementById("colour")
-  status.textContent = ""
-
-  chrome.storage.sync.set({
-    "colour": colour.value,
-  }, function() {
-    // "Done" callback
-    if (chrome.runtime.lastError) {
-      status.textContent = "Couldn't save settings: " + chrome.runtime.lastError
-    }
-    console.log(`done saving (colour: ${colour.value})`)
+  let status = document.getElementById("status")
+  let colour = document.getElementById("colour")
+  setColour(colour.value).then(() => {
+    status.textContent = ""
+  }).catch(error => {
+    status.textContent = `Couldn't save settings: ${error}`
   })
 }
 
 document.addEventListener("DOMContentLoaded", loadOptions)
 for (let elem of document.getElementsByClassName("save")) {
-  console.log(elem)
   elem.addEventListener("input", saveOptions)
 }
