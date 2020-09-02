@@ -2,7 +2,7 @@ import {getColour} from './config.js'
 
 // Set the toolbar icon to the audible one.
 function doAudibleIcon(tab) {
-  console.log("set icon -> audible")
+  console.log("set icon to audible, tab %o", tab)
   getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
@@ -16,13 +16,13 @@ function doAudibleIcon(tab) {
       "tabId": tab.id,
     })
   }).catch(error => {
-    console.error(`Couldn't load settings: ${error}`)
+    console.error("Couldn't load settings:", error)
   })
 }
 
 // Set the toolbar icon to the muted one.
 function doMutedIcon(tab) {
-  console.log("set icon -> muted")
+  console.log("set icon to muted, tab %o", tab)
   getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
@@ -36,13 +36,13 @@ function doMutedIcon(tab) {
       "tabId": tab.id,
     })
   }).catch(error => {
-    console.error(`Couldn't load settings: ${error}`)
+    console.error("Couldn't load settings:", error)
   })
 }
 
 // Toggle the mute state of a tab.
 function toggleMuted(tab) {
-  console.log(`toggleMuted`)
+  console.log("toggle mute state, tab %o", tab)
   let isMuted = tab.mutedInfo.muted
   chrome.tabs.update(tab.id, {"muted": !isMuted})
   // Note: the icon is updated down below, by the chrome.tabs.onUpdated
@@ -52,7 +52,7 @@ function toggleMuted(tab) {
 
 // Event listener for the toolbar icon being clicked.
 chrome.browserAction.onClicked.addListener(tab => {
-  console.log("toggle mute state (icon click)")
+  console.log("icon clicked, tab %o", tab)
   if (tab !== undefined) {
     toggleMuted(tab)
   } else {
@@ -65,10 +65,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.hasOwnProperty("mutedInfo")) {
     let currStateStr = tab.mutedInfo.muted ? "MUTED" : "AUDIBLE"
     if (changeInfo.mutedInfo.muted) {
-      console.log(`mutestate: ${currStateStr} -> MUTED`)
+      console.log(`mutestate: ${currStateStr} -> MUTED, tab %o`, tab)
       doMutedIcon(tab)
     } else {
-      console.log(`mutestate: ${currStateStr} -> AUDIBLE`)
+      console.log(`mutestate: ${currStateStr} -> AUDIBLE, tab %o`, tab)
       doAudibleIcon(tab)
     }
   } else if (changeInfo.hasOwnProperty("status")) {
@@ -76,7 +76,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     // another page starts loading, so we have to reset it whenever that
     // happens.
     if (changeInfo.status === "loading") {
-      console.log("page load detected, reset icon to match")
+      console.log("page load detected, reset icon to match, tab %o", tab)
       if (tab.mutedInfo.muted) {
         doMutedIcon(tab)
       } else {
