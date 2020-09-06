@@ -40,48 +40,48 @@ function doMutedIcon(tab) {
   })
 }
 
+function updateIcon(tab) {
+  if (tab.mutedInfo.muted) {
+    doMutedIcon(tab)
+  } else {
+    doAudibleIcon(tab)
+  }
+}
+
 // Toggle the mute state of a tab.
 function toggleMuted(tab) {
   console.log("toggle mute state, tab %o", tab)
   let isMuted = tab.mutedInfo.muted
   chrome.tabs.update(tab.id, {"muted": !isMuted})
-  // Note: the icon is updated down below, by the chrome.tabs.onUpdated
-  // listener (this is to make sure that the icon doesn't get out of
-  // sync if the tab mute state is changed by something else).
+  // Note: the icon is updated elsewhere (this is to make sure that the
+  // icon doesn't get out of sync if the tab mute state is changed by
+  // something else).
 }
 
 // Event listener for the toolbar icon being clicked.
 chrome.browserAction.onClicked.addListener(tab => {
-  console.log("icon clicked, tab %o", tab)
+  console.group("icon clicked, tab %o", tab)
   if (tab !== undefined) {
     toggleMuted(tab)
   } else {
     console.warn("couldn't toggle, no tab!")
   }
+  console.groupEnd()
 })
 
 // Update the icon whenever necessary.
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.hasOwnProperty("mutedInfo")) {
-    let currStateStr = tab.mutedInfo.muted ? "MUTED" : "AUDIBLE"
-    if (changeInfo.mutedInfo.muted) {
-      console.log(`mutestate: ${currStateStr} -> MUTED, tab %o`, tab)
-      doMutedIcon(tab)
-    } else {
-      console.log(`mutestate: ${currStateStr} -> AUDIBLE, tab %o`, tab)
-      doAudibleIcon(tab)
-    }
-  } else if (changeInfo.hasOwnProperty("status")) {
-    // Apparently the toolbar icon gets reset to the default once
-    // another page starts loading, so we have to reset it whenever that
-    // happens.
-    if (changeInfo.status === "loading") {
-      console.log("page load detected, reset icon to match, tab %o", tab)
-      if (tab.mutedInfo.muted) {
-        doMutedIcon(tab)
-      } else {
-        doAudibleIcon(tab)
-      }
-    }
+  if (changeInfo.hasOwnProperty("mutedInfo") || changeInfo.hasOwnProperty("status")) {
+    updateIcon(tab)
+  }
+})
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "sync") {
+    chrome.tabs.query({}, tabs => {
+      tabs.forEach(tab => {
+        updateIcon(tab)
+      })
+    })
   }
 })
