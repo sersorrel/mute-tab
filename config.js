@@ -24,6 +24,32 @@ function syncedStorageSet(name, value) {
   })
 }
 
+function localStorageGet(name, fallback = undefined) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get({[name]: fallback}, items => {
+      let e = chrome.runtime.lastError
+      if (e) {
+        reject(Error(e.message))
+      } else {
+        resolve(items[name])
+      }
+    })
+  })
+}
+
+function localStorageSet(name, value) {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.set({[name]: value}, () => {
+      let e = chrome.runtime.lastError
+      if (e) {
+        reject(Error(e.message))
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
 export function getRegularColour() {
   return syncedStorageGet("colour", "dark")
 }
@@ -54,4 +80,12 @@ export function setColour(val) {
   } else {
     return setRegularColour(val)
   }
+}
+
+export function getDebugMode() {
+  return localStorageGet("debug-mode", false)
+}
+
+export function setDebugMode(val) {
+  return localStorageSet("debug-mode", val)
 }
