@@ -6,6 +6,9 @@ body {
   padding: 1em;
   padding-top: 0;
 }
+summary {
+  margin: 1em 0;
+}
     </style>
   </head>
   <body>
@@ -30,7 +33,20 @@ body {
       Debug mode:
       <input type="checkbox" id="debug-mode" class="save">
     </label>
-    <div id="debug-logs"></div>
+    <div id="debug-logs">
+      <p>Debug mode is enabled. <strong>Leave this page open.</strong> Debug logs will be collected as you use the extension.</p>
+      <p id="debug-logs-uncollected">When you encounter a problem, come back to this tab.</p>
+      <div id="debug-logs-collected">
+        <p>Debugging information has now been collected. Press the button below to copy it to the clipboard. This information will help the developer to fix the problem.</p>
+        <button id="copy-debug-logs" type="button">Copy debugging information</button>
+        <p>Remember to turn debug mode off once you're done.</p>
+        <details>
+          <summary>What data do these logs include?</summary>
+          <p>No personal information is included; the developer cannot identify you from these logs.</p>
+          <p>Log entries are written when various events occur (such as the "mute tab" button being pressed, or another extension muting/unmuting a tab). Each log entry has a timestamp, and may include contextual information about the event (such as the ID of the extension which muted/unmuted the tab).</p>
+        </details>
+      </div>
+    </div>
     <script type="module" src="options.js"></script>
   </body>
 </html>

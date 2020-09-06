@@ -1,8 +1,9 @@
-import {getColour} from './config.js'
+import {getColour, setDebugMode} from './config.js'
+import {error, warn, info, debug} from './debug.js'
 
 // Set the toolbar icon to the audible one.
 function doAudibleIcon(tab) {
-  console.log("set icon to audible, tab %o", tab)
+  debug(`set icon to audible, tab ${JSON.stringify(tab)}`)
   getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
@@ -15,14 +16,14 @@ function doAudibleIcon(tab) {
       "title": "Mute tab",
       "tabId": tab.id,
     })
-  }).catch(error => {
-    console.error("Couldn't load settings:", error)
+  }).catch(e => {
+    error("Couldn't load settings:", e)
   })
 }
 
 // Set the toolbar icon to the muted one.
 function doMutedIcon(tab) {
-  console.log("set icon to muted, tab %o", tab)
+  debug(`set icon to muted, tab ${JSON.stringify(tab)}`)
   getColour().then(colour => {
     chrome.browserAction.setIcon({
       "path": {
@@ -35,8 +36,8 @@ function doMutedIcon(tab) {
       "title": "Unmute tab",
       "tabId": tab.id,
     })
-  }).catch(error => {
-    console.error("Couldn't load settings:", error)
+  }).catch(e => {
+    error("Couldn't load settings:", e)
   })
 }
 
@@ -50,7 +51,7 @@ function updateIcon(tab) {
 
 // Toggle the mute state of a tab.
 function toggleMuted(tab) {
-  console.log("toggle mute state, tab %o", tab)
+  debug(`toggle mute state, tab ${JSON.stringify(tab)}`)
   let isMuted = tab.mutedInfo.muted
   chrome.tabs.update(tab.id, {"muted": !isMuted})
   // Note: the icon is updated elsewhere (this is to make sure that the
@@ -60,13 +61,12 @@ function toggleMuted(tab) {
 
 // Event listener for the toolbar icon being clicked.
 chrome.browserAction.onClicked.addListener(tab => {
-  console.group("icon clicked, tab %o", tab)
+  info(`icon clicked, tab ${JSON.stringify(tab)}`)
   if (tab !== undefined) {
     toggleMuted(tab)
   } else {
-    console.warn("couldn't toggle, no tab!")
+    warn("couldn't toggle, no tab!")
   }
-  console.groupEnd()
 })
 
 // Update the icon whenever necessary.
@@ -84,4 +84,12 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
       })
     })
   }
+})
+
+chrome.runtime.onStartup.addListener(() => {
+  setDebugMode(false)
+})
+
+chrome.runtime.onInstalled.addListener(() => {
+  setDebugMode(false)
 })
