@@ -20,6 +20,11 @@ case $desc in
 esac
 desc="${desc#v}"
 
+if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+	printf 'Untracked files, commit your changes first!\n' >&2
+	exit 1
+fi
+
 IFS=. read -r major minor patch <<EOF
 $(printf '%s\n' "$desc")
 EOF
