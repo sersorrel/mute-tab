@@ -2,7 +2,7 @@ SIZES := 16 19 38 48 128
 ICONNAMES := $(addprefix audible-dark-, $(SIZES)) $(addprefix audible-light-, $(SIZES)) $(addprefix muted-dark-, $(SIZES)) $(addprefix muted-light-, $(SIZES)) $(addprefix webstore-icon-, $(SIZES))
 ICONS := $(addprefix images/, $(addsuffix .png, $(ICONNAMES)))
 
-FILES := $(ICONS) background.html background.js config.js LICENSE manifest.json options.html options.js README.md
+FILES := $(ICONS) background.html background.js config.js debug.js LICENSE manifest.json options.html options.js README.md
 
 .PHONY: zip
 zip: out.zip
