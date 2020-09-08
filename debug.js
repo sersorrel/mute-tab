@@ -49,8 +49,7 @@ export function debug(...args) {
 }
 
 chrome.storage.onChanged.addListener((changes, areaName) => {
-  let val = changes["debug-mode"]?.newValue
-  if (val !== undefined) {
-    debugMode = val
+  if ("debug-mode" in changes) {
+   debugMode = changes["debug-mode"].newValue 
   }
 })
