@@ -45,5 +45,3 @@ git commit -m "Release v$version" manifest.json
 git tag -a v$version -m "mute-tab $version"
 
 make -B
-
-git push
