@@ -66,8 +66,8 @@ export function setIncognitoColour(val) {
   return syncedStorageSet("incognito-colour", val)
 }
 
-export function getColour() {
-  if (chrome.extension.inIncognitoContext) {
+export function getColour(tab) {
+  if (tab.incognito) {
     return getIncognitoColour()
   } else {
     return getRegularColour()

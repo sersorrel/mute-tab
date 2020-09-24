@@ -4,7 +4,7 @@ import {error, warn, info, debug} from './debug.js'
 // Set the toolbar icon to the audible one.
 function doAudibleIcon(tab) {
   debug(`set icon to audible, tab ${JSON.stringify(tab)}`)
-  getColour().then(colour => {
+  getColour(tab).then(colour => {
     chrome.browserAction.setIcon({
       "path": {
         "19": `images/audible-${colour}-19.png`,
@@ -24,7 +24,7 @@ function doAudibleIcon(tab) {
 // Set the toolbar icon to the muted one.
 function doMutedIcon(tab) {
   debug(`set icon to muted, tab ${JSON.stringify(tab)}`)
-  getColour().then(colour => {
+  getColour(tab).then(colour => {
     chrome.browserAction.setIcon({
       "path": {
         "19": `images/muted-${colour}-19.png`,
