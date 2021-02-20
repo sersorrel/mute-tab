@@ -13,9 +13,9 @@ out.zip: $(FILES)
 
 # There's no good way to avoid duplicating the recipe here.
 images/audible-dark-%.png: images/audible.svg
-	inkscape -z -e $@ -w $* -h $* $<
+	inkscape -z -o $@ -w $* -h $* $<
 images/muted-dark-%.png: images/muted.svg
-	inkscape -z -e $@ -w $* -h $* $<
+	inkscape -z -o $@ -w $* -h $* $<
 
 images/audible-light-%.png: images/audible-dark-%.png
 	convert $< -negate $@
