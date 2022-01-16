@@ -25,9 +25,9 @@ images/muted-dark-%.png: images/muted.svg
 	inkscape $(INKSCAPE_EXPORT_FLAG) $@ -w $* -h $* $<
 
 images/audible-light-%.png: images/audible-dark-%.png
-	convert $< -negate $@
+	convert $< -channel RGB -negate $@
 images/muted-light-%.png: images/muted-dark-%.png
-	convert $< -negate $@
+	convert $< -channel RGB -negate $@
 
 images/webstore-icon-128.png: images/muted.svg
 	convert $< -resize 90x90! -bordercolor white -border 3x3 -bordercolor none -border 16x16 $@
