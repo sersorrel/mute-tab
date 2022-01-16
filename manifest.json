@@ -1,13 +1,13 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Tab Muter",
   "description": "Re-enables the \"Mute Tab\" feature once found in Chrome itself.",
   "version": "1.4.2",
-  "minimum_chrome_version": "85",
+  "minimum_chrome_version": "96",
   "author": "Ash Holland",
 
-  "browser_action": {
+  "action": {
     "default_title": "Mute tab",
     "default_icon": {
       "19": "images/audible-dark-19.png",
@@ -20,8 +20,8 @@
   ],
 
   "background": {
-    "page": "background.html",
-    "persistent": false
+    "service_worker": "background.js",
+    "type": "module"
   },
 
   "options_ui": {

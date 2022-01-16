@@ -5,14 +5,14 @@ import {error, warn, info, debug} from './debug.js'
 function doAudibleIcon(tab) {
   debug(`set icon to audible, tab ${JSON.stringify(tab)}`)
   getColour(tab).then(colour => {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       "path": {
         "19": `images/audible-${colour}-19.png`,
         "38": `images/audible-${colour}-38.png`,
       },
       "tabId": tab.id,
     })
-    chrome.browserAction.setTitle({
+    chrome.action.setTitle({
       "title": "Mute tab",
       "tabId": tab.id,
     })
@@ -25,14 +25,14 @@ function doAudibleIcon(tab) {
 function doMutedIcon(tab) {
   debug(`set icon to muted, tab ${JSON.stringify(tab)}`)
   getColour(tab).then(colour => {
-    chrome.browserAction.setIcon({
+    chrome.action.setIcon({
       "path": {
         "19": `images/muted-${colour}-19.png`,
         "38": `images/muted-${colour}-38.png`,
       },
       "tabId": tab.id,
     })
-    chrome.browserAction.setTitle({
+    chrome.action.setTitle({
       "title": "Unmute tab",
       "tabId": tab.id,
     })
@@ -60,7 +60,7 @@ function toggleMuted(tab) {
 }
 
 // Event listener for the toolbar icon being clicked.
-chrome.browserAction.onClicked.addListener(tab => {
+chrome.action.onClicked.addListener(tab => {
   info(`icon clicked, tab ${JSON.stringify(tab)}`)
   if (tab !== undefined) {
     toggleMuted(tab)
