@@ -6,7 +6,7 @@ setTimeout(() => {
 
 document.getElementById("go-away").onclick = () => {
   console.log("setting suppressIssue3Popup pref")
-  chrome.storage.local.set({ suppressIssue3Popup: true }).then(() => {
+  chrome.storage.local.set({ suppressIssue3Popup: Date.now() }).then(() => {
     window.close()
   }, err => {
     document.getElementById("errors").textContent = `could not save setting: ${err}`
