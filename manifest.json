@@ -3,7 +3,7 @@
 
   "name": "Tab Muter",
   "description": "Re-enables the \"Mute Tab\" feature once found in Chrome itself.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "minimum_chrome_version": "122",
   "author": "Ash Holland",
 
